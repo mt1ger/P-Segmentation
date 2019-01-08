@@ -1,0 +1,90 @@
+/**** Latex Text ****/
+Preliminary\, Idea:\\
+1. WoP = \frac{(a\times DoLL + b\times NoH)}{SC_{MBL}}\\
+2. SC_l = \frac{TNoSS}{NoOSS}\times \frac{TSSiAS}{NoAS}\\
+3. SC_{MBL} = Min(SC_l), l\in LoP\\
+4. a + b = 1\\
+5. Still\, trying\, to\, figure\, out\, how\, to\, take\, DoLL\, into\, equation\, 1;\\
+\\
+WoP: Weight\, of\, Path\\
+SC: Spcectral\, Compactness\\
+DoLL: Distance\, of\, the\, Longest\, Link\\
+NoH: Number\, of\, Hops\\
+MBL: Most\, Busy\, Link\\
+TNoSS: Total\, Number\, of\, SpecSlots\\
+TSSiAS: Total\, SpecSlots\, in\, Available\, Segments\\
+NoOSS: Number\, of\, Occupied\, SpecSlots\\
+NoAS: Number\, of\, Available\, Segments\\
+/**** End Latex Text ****/
+
+
+// IMPORTANT
+Link Compactness can not represent the occupation status directly. It is possible that part of the available sections can not be used to allocate requests because of continuous constraint.
+
+
+/**** Latex Text ****/
+Modified\, Idea:\\
+1. WoP = a\times LoP + b\times NoH + c\times PC\\
+2. PC = \frac{TNoSS}{NoOSS}\times \frac{TSSiAS}{NoAS}\\
+3. NoOSS = TNoSS - TSSiAS\\
+4. a + b + c = 1\\
+5. If\, all\, Path's\, Lengths\, are\, in\, same\, reach\, limitation\, range\, of\, a\, MF:\\
+\-\hspace{10px} WoP = d\times NoH + e\times PC\\
+6. d + e = 1\\        
+\\
+WoP: Weight\, of\, Path\\
+PC: Path\, Compactness\\
+LoP: Length\, of\, Path\\
+NoH: Number\, of\, Hops\\
+TNoSS: Total\, Number\, of\, SpecSlots\\
+TSSiAS: Total\, SpecSlots\, in\, Available\, Segments\\
+NoOSS: Number\, of\, Occupied\, SpecSlots\\
+NoAS: Number\, of\, Available\, Segments\\
+/**** End Latex Text ****/
+
+
+// IMPORTANT
+PC is not depending on BitsPerSignal.
+
+
+/**** Latex Text ****/
+Modified\, Idea2:\\
+1. WoP = a\times BpS + b\times NoH + c\times 1/PC\\
+2. PC = \frac{TNoSS}{NoOSS}\times \frac{TSSiAS}{NoAS}\\
+3. NoOSS = TNoSS - TSSiAS\\
+4. a + b + c = 1\\
+5. BitsPerSignal\, is\, decided\, by\, Path\, Length\\
+6. If\, all\, Paths'\, Lengths\, are\, in\, same\, range\, for\, a\, specific\, MF:\\
+\-\hspace{10px} WoP = d\times NoH + e\times 1/PC\\
+7. d + e = 1\\
+\\
+WoP: Weight\, of\, Path\\
+BpS: Bits\, per\, Signal\\
+PC: Path\, Compactness\\
+LoP: Length\, of\, Path\\
+NoH: Number\, of\, Hops\\
+TNoSS: Total\, Number\, of\, SpecSlots\\
+TSSiAS: Total\, SpecSlots\, in\, Available\, Segments\\
+NoOSS: Number\, of\, Occupied\, SpecSlots\\
+NoAS: Number\, of\, Available\, Segments\\
+/**** End Latex Text ****/
+
+
+/**** Latex Text ****/
+Modified\, Idea3:\\
+1. WoP = a\times BpS + b\times 1/NoH + c\times PC\\
+2. PC = \frac{TNoSS}{NoOSS}\times \frac{TSSiAS}{NoAS}\\
+3. NoOSS = TNoSS - TSSiAS\\
+4. a + b + c = 1\\
+5. BitsPerSignal\, is\, decided\, by\, Path\, Length\\
+\\
+WoP: Weight\, of\, Path\\
+BpS: Bits\, per\, Signal\\
+PC: Path\, Compactness\\
+LoP: Length\, of\, Path\\
+NoH: Number\, of\, Hops\\
+TNoSS: Total\, Number\, of\, SpecSlots\\
+TSSiAS: Total\, SpecSlots\, in\, Available\, Segments\\
+NoOSS: Number\, of\, Occupied\, SpecSlots\\
+NoAS: Number\, of\, Available\, Segments\\
+/**** End Latex Text ****/
