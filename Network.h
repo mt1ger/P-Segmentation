@@ -16,19 +16,21 @@
 #define BW_SPECSLOT 12.5
 
 /*** Switches of Debugging Probes ResourceAssignment.cpp ***/
-#define DEBUG_print_resource_state_on_the_path
-#define DEBUG_print_AvailableSpecSlots
-#define DEBUG_print_PotentialSections_and_PC
-#define DEBUG_print_SortedSections
-#define DEBUG_collect_EventID_of_blocked_requests //need to collaberate with debug_print_eventid_of_blocked_requests
-#define DISPLAY_available_path
-#define DISPLAY_path_order
-#define DISPLAY_selected_path
-#define DISPLAY_metrics
-#define PRINT_allocation_block_release
+// #define DEBUG_print_resource_state_on_the_path
+// #define DEBUG_print_AvailableSpecSlots
+// #define DEBUG_print_PotentialSections_and_PC
+// #define DEBUG_modulation_checking
+// #define DEBUG_print_SortedSections
+// #define DEBUG_check_AssignedSpectralSection
+// #define DEBUG_collect_EventID_of_blocked_requests //need to collaberate with debug_print_eventid_of_blocked_requests
+// #define DISPLAY_available_path
+// #define DISPLAY_path_order
+// #define DISPLAY_selected_path
+// #define DISPLAY_metrics
+// #define PRINT_allocation_block_release
 
 /*** Switches of TrafficGenerator.cpp ***/
-#define DEBUG_print_new_built_Event
+// #define DEBUG_print_new_built_Event
 
 using namespace std;
 
