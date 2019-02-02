@@ -78,7 +78,7 @@ void RoutingTable::generate_dijkstra_routing_table () {
 		network->DRoutingTable.push_back (single_src_routing_table (i));
 	}
 	
-	#ifdef  DEBUG_generate_dijkstra_routing_table	
+	#ifdef  DEBUG_content_in_Dijkstra_routing_table
 	cout << endl;
 	for (int i = 0; i < network->NumofNodes; i++) {
 		cout << endl;
@@ -100,7 +100,6 @@ void RoutingTable::generate_routing_table () {
 	Bhandari bhandari (network);
 	
 	generate_dijkstra_routing_table ();
-
 	for (int src = 0; src < network->NumofNodes; src++) {
 		for (int dest = 0; dest < network->NumofNodes; dest++) {
 			if (src == dest) {
@@ -110,7 +109,8 @@ void RoutingTable::generate_routing_table () {
 				YroutingTable.push_back (Z);
 				continue;
 			}
-			YroutingTable.push_back (bhandari.eliminate_common_links (src, dest, 10));
+
+			YroutingTable.push_back (bhandari.eliminate_common_links (src, dest, 20));
 			for (int i = 0; i < YroutingTable[0].size (); i++) {
 				if ((YroutingTable[0][i].size () - 1) < network->MaxNoH) network->MaxNoH = YroutingTable[0][i].size () - 1;
 				if ((YroutingTable[0][i].size () - 1) > network->MinNoH) network->MinNoH = YroutingTable[0][i].size () - 1;

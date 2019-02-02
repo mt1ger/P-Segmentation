@@ -81,6 +81,18 @@ int main (int argc, char *argv[]) {
 	fp << plot;
 	fp.close ();
 
+	//temp data
+	network->AvgNoHP0 = (double) network->TotalNoHP0 / network->NumofRequests;
+	network->AvgNoHP1 = (double) network->TotalNoHP1 / network->NumofRequests;
+	network->AvgPLP0 = (double) network->TotalPLP0 / network->NumofRequests;
+	network->AvgPLP1 = (double) network->TotalPLP1 / network->NumofRequests;
+	fstream tempfp;
+	string AvgFile;
+	AvgFile = Path + "AvgFile.txt";
+	tempfp.open (AvgFile, fstream::app);
+	tempfp << to_string (network->NumofCores) + ' ' + to_string (Erlang) + ' ' + to_string (network->AvgNoHP0) + ' ' + to_string (network->AvgNoHP1) + ' ' + to_string (network->AvgPLP0) + ' ' + to_string (network->AvgPLP1) + '\n';
+	tempfp.close ();
+
 	EndFlag = 1;
 	pthread_join (timer, NULL);
 	double TimeSpent = (((double)(EndPoint - StartPoint))/ CLOCKS_PER_SEC);

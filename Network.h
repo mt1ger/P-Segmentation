@@ -15,6 +15,14 @@
 // #define MAX_DATASIZE_REQUEST 50 
 #define BW_SPECSLOT 12.5
 
+/*** Switches of RoutingTable related Probes ***/
+// #define DEBUG_content_in_routingTable
+// #define DEBUG_content_in_Dijkstra_routing_table
+// #define DEBUG_content_in_Topology
+// #define DEBUG_content_in_AjacentNodes
+// #define DEBUG_content_in_PendingNodes
+// #define DEBUG_content_in_Predecessors
+
 /*** Switches of Debugging Probes ResourceAssignment.cpp ***/
 // #define DEBUG_print_resource_state_on_the_path
 // #define DEBUG_print_AvailableSpecSlots
@@ -23,6 +31,7 @@
 // #define DEBUG_print_SortedSections
 // #define DEBUG_check_AssignedSpectralSection
 // #define DEBUG_collect_EventID_of_blocked_requests //need to collaberate with debug_print_eventid_of_blocked_requests
+
 // #define DISPLAY_available_path
 // #define DISPLAY_path_order
 // #define DISPLAY_selected_path
@@ -79,6 +88,16 @@ class Network {
 		double AvgIntFrag;
 		double AvgExtFrag;
 		double AvgHybridFrag;
+
+		//Temp Data // to collect the hop count and path length of the 2 least hop count or shortest paths
+		int TotalNoHP0 = 0;
+		int TotalNoHP1 = 0;
+		int TotalPLP0 = 0;
+		int TotalPLP1 = 0;
+		double AvgNoHP0; // Average Number of Hops
+		double AvgNoHP1; // Average Number of Hops
+		double AvgPLP0; // Average Path Length
+		double AvgPLP1; // Average Path Length
 
 		// Timer and counters 
 		long long RequestCounter; // Generated Number of Requests

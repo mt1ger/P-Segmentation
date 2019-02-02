@@ -26,6 +26,17 @@ void Topology::read_topology (void) {
 		HNodesWeight.clear ();
 	}
 
+	#ifdef DEBUG_content_in_Topology
+	for (int i = 0; i < network->NumofNodes; i++)
+	{
+		for (int j = 0; j < network->NumofNodes; j++)
+		{
+			cout << network->NodesWeight[i][j] << ' ';
+		}
+		cout << endl;
+	}
+	#endif
+
 	fclose (nettopo);
 }
 

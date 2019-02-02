@@ -13,7 +13,7 @@
 #include "ResourceAssignment.h"
 using namespace std;
 
-/*** MERGE SORTING ***//*{{{*/
+/*** MERGE SORTING ***/
 void merge (vector<int> * ar, int low, int mid, int high)
 {
 	int n, m, i, j, k;
@@ -57,7 +57,6 @@ void merge (vector<int> * ar, int low, int mid, int high)
 	}
 }
 
-
 void merge_sort(vector<int> * ar, int low, int high)
 {
 	int mid;
@@ -68,13 +67,13 @@ void merge_sort(vector<int> * ar, int low, int high)
 		merge_sort (ar, mid+1, high);
 		merge (ar, low, mid, high);
 	}
-}/*}}}*/
+}
 
 double logrithm (double x, double base) {
 	return log (x) / log (base);
 }
 
-/*** CHECK AVAILABLITY SOURCE ***//*{{{*/
+/*** CHECK AVAILABLITY SOURCE ***/
 void ResourceAssignment::check_availability_source (unsigned int predecessor, unsigned int successor, CircuitRequest * circuitRequest) {
 	vector<int> HAvailableSpecSlots;
 
@@ -89,9 +88,9 @@ void ResourceAssignment::check_availability_source (unsigned int predecessor, un
 			}
 		}
 	}
-}/*}}}*/
+}
 
-/*** CHECK AVAILABILITY LINK ***//*{{{*/
+/*** CHECK AVAILABILITY LINK ***/
 void ResourceAssignment::check_availability_link (vector<int> * CircuitRoute) {
 
 	list< vector<int> >::iterator i;
@@ -116,9 +115,9 @@ void ResourceAssignment::check_availability_link (vector<int> * CircuitRoute) {
 	}
 	cout << endl;
 	#endif
-}/*}}}*/
+}
 
-/*** SECTION ESTABLISHMENT***//*{{{*/
+/*** SECTION ESTABLISHMENT***/
 void ResourceAssignment::section_establishment (list< vector<int> > &PotentialSec) {
 	// int TotalOSS = 0; // OSS = Occupied  Spec Slots
 	// int TotalASS = 0; // ASS = Available Spec Slots
@@ -164,13 +163,11 @@ void ResourceAssignment::section_establishment (list< vector<int> > &PotentialSe
 			}
 		}
 	}
+}
 
-}/*}}}*/
-
-
-
-
-void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{{*/
+/*** HANDLE REQUESTS ***/
+void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) 
+{
 	RoutingTable routingTable (network);	
 	ModulationFormats modulationFormats (circuitRequest, network);
 
@@ -186,8 +183,7 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 	string MF = "BPSK";
 	unsigned int mfTimes = 0, NumofOccupiedSpectralSlots = 0;
 
-
-	/** Generate Paths and Sort Path by number of hops **//*{{{*/
+	/** Generate Paths and Sort Path by number of hops **/
 	PathList = network->routingTable[circuitRequest->Src][circuitRequest->Dest];
 	#ifdef DISPLAY_available_path
 	cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
@@ -243,11 +239,35 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 		cout << PathSortedIndex[i] << ' '; 
 	}
 	cout << endl;
-	#endif/*}}}*/
+	#endif
 	
+	//Temp Data
+	while (PathSortedIndex.size () > 2)
+		PathSortedIndex.pop_back ();
+	network->TotalNoHP0 += PathList[PathSortedIndex[0]].size ();
+	network->TotalNoHP1 += PathList[PathSortedIndex[1]].size ();
+	for (int i = 1; i < PathList[PathSortedIndex[0]].size (); i++)
+	{
+		network->TotalPLP0 += network->NodesWeight[PathList[PathSortedIndex[0]][i - 1]][PathList[PathSortedIndex[0]][i]]; 
+	}
+	for (int i = 1; i < PathList[PathSortedIndex[1]].size (); i++)
+	{
+		network->TotalPLP1 += network->NodesWeight[PathList[PathSortedIndex[1]][i - 1]][PathList[PathSortedIndex[1]][i]]; 
+	}
+
+
+	#ifdef DISPLAY_path_order 
+	cout << "\033[0;32mPRINT\033[0m " << "the sorted path index" << endl;
+	for (int i = 0; i < PathSortedIndex.size (); i++)
+	{
+		cout << PathSortedIndex[i] << ' '; 
+	}
+	cout << endl;
+	#endif
 
 	/** Resource Assignment **/
-	for (int i = 0; i < PathSortedIndex.size (); i++) {
+	for (int i = 0; i < PathSortedIndex.size (); i++) 
+	{
 		int NoOSS = 0; // number of Occupied Spec Slots
 		CircuitRoute = PathList[PathSortedIndex[i]];
 		#ifdef DISPLAY_selected_path
@@ -258,7 +278,7 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 		cout << CircuitRoute.at (CircuitRoute.size () - 1) + 1 << endl;
 		#endif
 
-		/* Modualtion and Resource Checking *//*{{{*/
+		/* Modualtion and Resource Checking */
 		// Modulation
 		NoOSS = modulationFormats.mf_chosen (CircuitRoute, &circuitRequest->OccupiedSpectralSlots, &circuitRequest->DataSize, &MF, &mfTimes);
 		// MFList.push_back (MF);
@@ -270,9 +290,9 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 
 		// Check available spec slots
 		check_availability_source (PathList[PathSortedIndex[i]][0], PathList[PathSortedIndex[i]][1], circuitRequest);
-		check_availability_link (&PathList[PathSortedIndex[i]]);/*}}}*/
+		check_availability_link (&PathList[PathSortedIndex[i]]);
 
-		/* Section Sorting *//*{{{*/
+		/* Section Sorting */
 		int SizeSum = 0;
 		int temp = 0;
 		vector<int> SectionSize;
@@ -310,10 +330,10 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 			cout << "    ";
 		}
 		cout << endl;
-		#endif/*}}}*/
+		#endif
 
 		/* Resource pre-provision */ 
-		#ifdef DEBUG_print_resource_state_on_the_path/*{{{*/
+		#ifdef DEBUG_print_resource_state_on_the_path
 		cout << "\033[0;32mPRINT\033[0m " << "resources BEFORE allcation: " << endl;
 		for (int i = 1; i < CircuitRoute.size (); i++) {
 			cout << "On link " << CircuitRoute[i - 1] + 1 << " to " << CircuitRoute[i] + 1 << endl;
@@ -339,7 +359,7 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 			AvailableFlag = false;
 		}
 
-		// if the resource on a single path can not afford the request, allocate the as much of it as possible, and go to the next path{{{
+		// if the resource on a single path can not afford the request, allocate the as much of it as possible, and go to the next path
 		if (OSS + SortedSections.size () * GB > TotalSizeofSections) {
 			if (!SortedSections.empty ())
 			{
@@ -420,7 +440,7 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 			}
 		}
 		if (AvailableFlag == true) break;
-	}/*}}}*/
+	}
 	
 	// To limit the number of sections
 	if (AssignedSpectralSection.size () > network->SectionNumLimitation) {
@@ -475,7 +495,7 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 			NumofOccupiedSpectralSlots += AssignedSpectralSection[i][2] - AssignedSpectralSection[i][1] + 1; 
 		}
 
-		#ifdef PRINT_allocation_block_release/*{{{*/
+		#ifdef PRINT_allocation_block_release
 		cout << "------------------------------------------------------------" << endl;
 		cout << "Request ID: " << circuitRequest->EventID << "\tStart: " << circuitRequest->EventTime << "\tEnd: " << circuitRequest->StartTime + circuitRequest->Duration << endl;
 		cout << "Source: " << circuitRequest->Src + 1 << "  Destination: " << circuitRequest->Dest + 1 << endl;
@@ -496,13 +516,13 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 		cout << "# of Transponders Used: " << TempNumofTransponders << endl;
 		cout << "# of Core Used: " << CoreCnter << endl;
 		cout << "------------------------------------------------------------" << endl;
-		#endif/*}}}*/
+		#endif
 
 		CircuitRelease * circuitRelease;
 		circuitRelease = new CircuitRelease (circuitRequest->EventID, UsedRoute, AssignedSpectralSection, circuitRequest->StartTime + circuitRequest->Duration, TempNumofTransponders);
 		eventQueue->queue_insert (circuitRelease);
 
-		// Thourogh Metric Collection{{{
+		// Thourogh Metric Collection
 		network->NumofAllocatedRequests++;
 		network->NumofSections = TempNumofTransponders;
 		// network->TotalHoldingTime += circuitRequest->Duration;
@@ -512,9 +532,9 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 		network->TotalGBUsed += TempNumofTransponders;
 		network->TotalDataSize += circuitRequest->DataSize;
 		network->TotalSSUsed += NumofOccupiedSpectralSlots * mfTimes;
-		network->TotalSSOccupied += (NumofOccupiedSpectralSlots + TempNumofTransponders) * mfTimes;/*}}}*/
+		network->TotalSSOccupied += (NumofOccupiedSpectralSlots + TempNumofTransponders) * mfTimes;
 		
-		#ifdef DISPLAY_metrics/*{{{*/
+		#ifdef DISPLAY_metrics
 		cout << "*** METRICS ***" << endl;
 		cout << "    Bits Per Signal: " << mfTimes << endl;
 		cout << "    NumofSections: " << network->NumofSections << endl; 
@@ -524,10 +544,10 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 		cout << "    TotalDataSize: " << network->TotalDataSize << "  This time: " << circuitRequest->DataSize << endl; 
 		cout << "    TotalSSUsed: " << network->TotalSSUsed << "  This time: " << NumofOccupiedSpectralSlots * mfTimes << endl; 
 		cout << "    TotalSSOccupied: " << network->TotalSSOccupied << "  This time: " << (NumofOccupiedSpectralSlots + TempNumofTransponders) * mfTimes << endl; 
-		#endif/*}}}*/
+		#endif
 	}
 
-	#ifdef DEBUG_print_resource_state_on_the_path/*{{{*/
+	#ifdef DEBUG_print_resource_state_on_the_path
 	cout << "\033[0;32mPRINT\033[0m " << "resources AFTER Allocation:" << endl;
 	vector<int> Route;
 	for (int p = 0; p < UsedRoute.size (); p++)  
@@ -550,11 +570,12 @@ void ResourceAssignment::handle_requests (CircuitRequest * circuitRequest) {/*{{
 	}
 	cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
 	cout << endl << endl;
-	#endif/*}}}*/
-}/*}}}*//*}}}*/
+	#endif
+}
 
 
-void ResourceAssignment::handle_releases (CircuitRelease * circuitRelease) {
+void ResourceAssignment::handle_releases (CircuitRelease * circuitRelease) 
+{
 	#ifdef DEBUG_print_resource_state_on_the_path
 	cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
 	cout << "\033[0;32mPRINT\033[0m " << "resources BEFORE Release:" << endl;

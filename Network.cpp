@@ -33,14 +33,14 @@ void Network::init () {
 		}
 	}
 	
-	#ifdef DEBUG_contect_in_routingTable
+	#ifdef DEBUG_content_in_routingTable
 	for (int a = 0; a < NumofNodes; a++) {
 		for (int b = 0; b < NumofNodes; b++) {
 			cout << "***** ";
-			cout << "SRC is: " << a + 1 << " and DEST is: " << b + 1 << endl;
+			cout << "SRC is: " << a << " and DEST is: " << b << endl;
 			for (int c = 0; c < routingTable[a][b].size (); c++) {
 				for (int d = 0; d < routingTable[a][b][c].size (); d++) {
-					cout << routingTable[a][b][c][d] + 1 << ' ';
+					cout << routingTable[a][b][c][d] << ' ';
 				}
 				cout << endl;
 			}
@@ -48,6 +48,20 @@ void Network::init () {
 		}
 		cout << endl;
 	}
+	// for (int a = 0; a < NumofNodes; a++) {
+	// 	for (int b = 0; b < NumofNodes; b++) {
+	// 		cout << "***** ";
+	// 		cout << "SRC is: " << a + 1 << " and DEST is: " << b + 1 << endl;
+	// 		for (int c = 0; c < routingTable[a][b].size (); c++) {
+	// 			for (int d = 0; d < routingTable[a][b][c].size (); d++) {
+	// 				cout << routingTable[a][b][c][d] + 1 << ' ';
+	// 			}
+	// 			cout << endl;
+	// 		}
+	// 		cout << endl;
+	// 	}
+	// 	cout << endl;
+	// }
 	#endif
 	
 	// Initialization of Resource Matrix

@@ -27,6 +27,19 @@ void Dijkstra::ajacent_nodes (vector< vector<int> > &AjacentNodes, vector< vecto
 		network->NumofAjacentNodes.push_back (HAjecentNodes.size ());
 		HAjecentNodes.clear ();
 	}
+
+	#ifdef DEBUG_content_in_AjacentNodes
+	cout << "\033[0m;32mPRINT\033[0m AjacentNodes" << endl;
+	for (int i = 0; i < AjacentNodes.size (); i++) 
+	{
+		for (int j = 0; j < AjacentNodes[i].size (); j++) 
+		{
+			cout << AjacentNodes[i][j] << ' ';
+		}
+		cout << endl;
+	}
+	cout << endl;
+	#endif
 }
 
 
@@ -46,6 +59,7 @@ void Dijkstra::shortest_path (int src, int dest, vector<int> &predecessors, vect
 
 	dist[src] = 0;
 	next = src;
+	 
 	for (int i = 0; i < AjacentNodes[next].size (); i++) {
 		dist[AjacentNodes[next][i]] = dist[src] + NodesWeight[next][AjacentNodes[next][i]];
 		predecessors[AjacentNodes[next][i]] = src;
@@ -55,6 +69,16 @@ void Dijkstra::shortest_path (int src, int dest, vector<int> &predecessors, vect
 
 	// Iteration
 	while (!PendingNodes.empty ()) {
+		
+		#ifdef DEBUG_content_in_PendingNodes
+		cout << "\033[0;32mPRINT\033[0m PendingNodes BEFORE node chosen" << endl;
+		for (k = PendingNodes.begin (); k != PendingNodes.end (); k++) 
+		{
+			cout << *k << ' '; 
+		}
+		cout << endl;
+		#endif
+
 		MinDist = INFINITY;
 		for (k = PendingNodes.begin (); k != PendingNodes.end (); k++) {
 			if (dist[*k] < MinDist) {
@@ -64,45 +88,40 @@ void Dijkstra::shortest_path (int src, int dest, vector<int> &predecessors, vect
 		}
 		next = *indexMD;
 		PendingNodes.erase (indexMD);
+	
 
+		#ifdef DEBUG_content_in_PendingNodes
+		cout << "\033[0;32mPRINT\033[0m PendingNodes AFTER node chosen" << endl;
+		cout << next << " is been chosen" << endl;
+		for (k = PendingNodes.begin (); k != PendingNodes.end (); k++) 
+		{
+			cout << *k << ' '; 
+		}
+		cout << endl;
+		#endif
+		
 		if (next == dest) {
 			break;
 		}
 		else {
-			for (int i = 0; i < AjacentNodes[next].size (); i++) {
-				if (dist[next] + NodesWeight[next][AjacentNodes[next][i]] < dist[AjacentNodes[next][i]]) {
+			for (int i = 0; i < AjacentNodes[next].size (); i++) 
+			{
+				if (dist[next] + NodesWeight[next][AjacentNodes[next][i]] < dist[AjacentNodes[next][i]])
+				{ 
 					dist[AjacentNodes[next][i]] = dist[next] + NodesWeight[next][AjacentNodes[next][i]];
-					bool IdenticalFlag = false;
-					for (k = PendingNodes.begin (); k != PendingNodes.end (); k++) {
-					if (*k == AjacentNodes[next][i]) IdenticalFlag = true;
-					}
-					if (IdenticalFlag == false)
-						PendingNodes.push_back (AjacentNodes[next][i]);
 					predecessors[AjacentNodes[next][i]] = next;
+                    //
+					// bool IdenticalFlag = false;
+					// for (k = PendingNodes.begin (); k != PendingNodes.end (); k++) 
+					// {
+					// 	if (*k == AjacentNodes[next][i]) IdenticalFlag = true;
+					// }
+					// if (IdenticalFlag == false)
+					PendingNodes.push_back (AjacentNodes[next][i]);
 				}
 			}
-
-		// 	cout << "Ajacent Nodes and their destination of " << next + 1 << endl;
-		// 	for (int i = 0; i < AjacentNodes[next].size (); i++) {
-		// 		cout << AjacentNodes[next][i] + 1 << ' ';
-		// 	}
-		// 	cout << endl;
-		// 	for (int i = 0; i < AjacentNodes[next].size (); i++) {
-		// 		cout << dist[AjacentNodes[next][i]] << ' ';
-		// 	}
-		// 	cout << endl;
-		// 	for (k = PendingNodes.begin (); k != PendingNodes.end (); k++) {
-		// 		cout << *k  + 1 << ' '; 
-		// 	}
-		// 	cout << endl;
-		// 	for (k = PendingNodes.begin (); k != PendingNodes.end (); k++) {
-		// 		cout << dist[*k] << ' ';
-		// 	}
-		// 	cout << endl;
 		}
 	}
 }
-
-
 
 
